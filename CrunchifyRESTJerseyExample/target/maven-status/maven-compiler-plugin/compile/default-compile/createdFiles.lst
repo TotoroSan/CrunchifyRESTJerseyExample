@@ -1,0 +1,14 @@
+com\crunchify\restjersey\brokerservice.class
+com\crunchify\restjersey\temperatureservice\CtoFService.class
+com\crunchify\restjersey\dataservice\DatabaseConnection.class
+com\crunchify\restjersey\temperatureservice\FtoCService.class
+com\crunchify\restjersey\temperatureservice\TemperatureService.class
+com\crunchify\restjersey\listeners\PersonContextListener.class
+com\crunchify\restjersey\listeners\PersonSessionListener.class
+com\crunchify\restjersey\model\Response.class
+com\crunchify\restjersey\personservice\PersonService.class
+com\crunchify\restjersey\model\Person.class
+com\crunchify\restjersey\listeners\PersonRequestListener.class
+com\crunchify\restjersey\dataservice\DatabaseAgent.class
+com\crunchify\restjersey\dataservice\DataManager.class
+com\crunchify\restjersey\personservice\PersonServiceImpl.class
