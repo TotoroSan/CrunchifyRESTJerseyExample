@@ -5,8 +5,9 @@
   
   import java.sql.SQLException;
 
-import javax.servlet.*;
-  import javax.servlet.annotation.WebListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 
 import com.crunchify.restjersey.dataservice.*; 
   
@@ -21,22 +22,13 @@ import com.crunchify.restjersey.dataservice.*;
 	  }
 	  
 	  
-	  // this is triggered once the servlet context is started => this happens on boot up for the first time. 
-	  // everything done here is only deleted if my application servlet shuts down (not the thread for it i think, but the whole applet)
-	  // so ressources handled by this will be available over for all calls to the person service web application
 	  public void contextInitialized(ServletContextEvent sce) { 
-		  // execute everything here that relates to the application-level and needs to be accessable by all instances of the service (in my case for example the persons hashmap (which serves as cache)
-		  // the persons hashmap would then be accessable for all service instances
-		  // so it is the context for ALL servlet instances
-		  // connection to the database can be established here, so that every instance of the service already has established connection => save connection as attribute to the context listener	  
-		  //initialize context parameter and store in static variable 
+
 		  System.out.println("new servlet context initialized => PersonService servlet created");
 		  DatabaseConnection databaseConnection = new DatabaseConnection(); // establish database connection
-		  
-
 	  }
   
-	  // implement the required context destroy method void
+	  
 	  public void contextDestroyed(ServletContextEvent sce) { 
 		// close databse connection => transfer everything from cache to db 
 		  

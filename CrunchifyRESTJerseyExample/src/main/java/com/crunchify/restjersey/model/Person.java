@@ -1,23 +1,40 @@
 package com.crunchify.restjersey.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-// this class is an example java bean for storing application data
-//(non persistent for now -> will be extended to use database server at some later point)
+import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
-// this class should actually be in another package, since its not part of the actual service but the data model that lies behind the service
 
-//this specifies that the data belonging to a person will be in an xml section with attribute name = "person"
-// so if we get an xml payload, we know where to look for the data we process here
-@XmlRootElement (name="person") 
+
+//@Entity
+//@Table
+
+// property order that will be applied in the document. it does not specify mandatory properties.
+@JsonbPropertyOrder({"name", "address", "nationality", "phonenumber", "age"}) 
 public class Person {
+	//@Id // TODO ADD AUTO GENERATION OF ID LATER 
+	@JsonbProperty("PersonID") // this defines the name of an object in the document. if omitted, the attribute name is used.
+	private int id;
+	
 	private String name;
 	private String address;
 	private String nationality;
 	private String phonenumber;
 	private int age;
-	private int id;
 
+	
+	public Person() {
+		super();
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -58,13 +75,7 @@ public class Person {
 		this.age = age;
 	}
 
-	public int getId() {
-		return id;
-	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
 	
 	// this prints all information about a person to string
 	@Override 
