@@ -1,5 +1,8 @@
 
   package com.crunchify.restjersey.listeners;
+  
+  import com.crunchify.restjersey.dataservice.DataManager;
+import com.crunchify.restjersey.model.PersonRepository;
 
   
   
@@ -9,7 +12,7 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
-import com.crunchify.restjersey.dataservice.*; 
+
   
   @WebListener
   public final class PersonContextListener implements ServletContextListener { 
@@ -25,7 +28,9 @@ import com.crunchify.restjersey.dataservice.*;
 	  public void contextInitialized(ServletContextEvent sce) { 
 
 		  System.out.println("new servlet context initialized => PersonService servlet created");
-		  DatabaseConnection databaseConnection = new DatabaseConnection(); // establish database connection
+		  //DataManager contextDataManager = new DataManager();
+		  //DatabaseConnection databaseConnection = new DatabaseConnection(); // establish database connection
+		  //PersonRepository personRepository = new PersonRepository(); // keep person repository for the whole servlet context lifecycle (change later if i make storage own serice or integrate EJB)
 	  }
   
 	  
@@ -34,12 +39,12 @@ import com.crunchify.restjersey.dataservice.*;
 		  
 //		  DatabaseAgent.postData();
 //		  
-		  try {
-			DatabaseConnection.getConnection().close();
-		  } catch (SQLException e) {
-			e.printStackTrace();
-		  } // close connection
-		  
+//		  try {
+//			DatabaseConnection.getConnection().close();
+//		  } catch (SQLException e) {
+//			e.printStackTrace();
+//		  } // close connection
+//		  
 		  System.out.println("servlet context destroyed, data connection closed => JOBS DONE");
 		  
 		   

@@ -1,19 +1,29 @@
 package com.crunchify.restjersey.model;
 
 
+import java.io.Serializable;
+
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 
 
-//@Entity
-//@Table
+
 
 // property order that will be applied in the document. it does not specify mandatory properties.
 @JsonbPropertyOrder({"name", "address", "nationality", "phonenumber", "age"}) 
-public class Person {
+@Entity(name="Person")
+@Table(name="Person")
+public class Person implements Serializable{
 	//@Id // TODO ADD AUTO GENERATION OF ID LATER 
-	@JsonbProperty("PersonID") // this defines the name of an object in the document. if omitted, the attribute name is used.
+	@JsonbProperty("id") // this defines the name of an object in the document. if omitted, the attribute name is used.
+	@Id
+	@GeneratedValue
 	private int id;
 	
 	private String name;

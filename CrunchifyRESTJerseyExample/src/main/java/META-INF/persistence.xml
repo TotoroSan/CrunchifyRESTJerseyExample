@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-	<persistence-unit name="CrunchifyRESTJerseyExample">
+	<persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>com.crunchify.restjersey.model.Person</class>
+		<properties>
+			<property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+			<property name="jakarta.persistence.jdbc.url" value = "jdbc:sqlserver://localhost:1433;databaseName=TESTDB;encrypt=true;trustServerCertificate=true"/>
+			<property name="jakarta.persistence.jdbc.user" value="SA"/>
+			<property name="jakarta.persistence.jdbc.password" value="&lt;Testpassword123!&gt;"/>
+			<property name="eclipselink.logging.level" value="FINE"/>
+
+		</properties>
 	</persistence-unit>
 </persistence>
