@@ -26,21 +26,35 @@ public class ResourceBrokerServiceImpl implements ResourceBrokerService {
 	@Override
 	@POST @Path("/person/add") 
 	public Response addPerson(Person p) {
-		ModelResourceRepository.create(p);
 		Response response = new Response();
-		response.setMessage("Person created successfully");
-		return response; // this sends the response back in http to the client (when exactly is handled by I/O thread of application server)
+		try {
+			ModelResourceRepository.create(p);
+			response.setStatus(true);
+			response.setMessage("Person created successfully");
+		} catch (Exception e) {
+			response.setStatus(false);
+			response.setMessage("Person already exists");
+			e.printStackTrace();
+			
+		} 
+		 // this sends the response back in http to the client via I/O thread of application server 
+		return response;	
 	}
 	
 	@Override
 	@GET @Path("/person/{id}/delete")
 	public Response deletePerson(@PathParam("id") int id) {
-		ModelResourceRepository.delete(id, new Person()); // TODO new person is placeholder fix and go away from person 
 		Response response = new Response();
-		response.setStatus(true);
-		response.setMessage("Person deleted successfully");
+		try {
+			ModelResourceRepository.delete(id, new Person()); // TODO new person is placeholder fix and go away from person 
+			response.setStatus(true);
+			response.setMessage("Person deleted successfully");
+		} catch (Exception e) {
+			response.setStatus(false);
+			response.setMessage("Person does not exist");
+			e.printStackTrace(); 
+		} 	
 		return response;
-
 	}
 	
 	@Override
@@ -49,6 +63,7 @@ public class ResourceBrokerServiceImpl implements ResourceBrokerService {
 		// this will be transferred back via http to the client, no need to specify the payload structure, the application server handles putting the data into xml. so it can be whatever
 		// of course we would need to refine this if the client expects a certain structure, so it would be necessary to furhter define it
 		//Person p = (Person) ModelResourceRepository.findById(id, new Person());
+		
 		return ModelResourceRepository.findById(id, new Person());
 	}
 	
@@ -56,7 +71,7 @@ public class ResourceBrokerServiceImpl implements ResourceBrokerService {
 	@Override
 	@GET @Path("/person/getAll")
 	public Person[] getAllPersons() {
-		List<ModelResource> personList = ModelResourceRepository.findAll(new Person());	
+		List<? extends ModelResource> personList = ModelResourceRepository.findAll(new Person());	
 		Person[] p = new Person[personList.size()];
 		personList.toArray(p);
 
@@ -70,19 +85,36 @@ public class ResourceBrokerServiceImpl implements ResourceBrokerService {
 	@Override
 	@POST @Path("/pet/add") 
 	public Response addPet(Pet p) {
-		ModelResourceRepository.create(p);
 		Response response = new Response();
-		response.setMessage("Person created successfully");
-		return response; // this sends the response back in http to the client (when exactly is handled by I/O thread of application server)
+		try {
+			ModelResourceRepository.create(p);
+			response.setStatus(true);
+			response.setMessage("Pet created successfully");
+		} catch (Exception e) {
+			response.setStatus(false);
+			response.setMessage("Pet already exists");
+			e.printStackTrace();
+			
+		} 
+		 // this sends the response back in http to the client via I/O thread of application server 
+		return response;	
 	}
 
 	@Override
 	@GET @Path("/pet/{id}/delete")
 	public Response deletePet(@PathParam("id") int id) {
-		ModelResourceRepository.delete(id, new Pet()); // TODO new person is placeholder fix and go away from person 
 		Response response = new Response();
-		response.setStatus(true);
-		response.setMessage("Pet deleted successfully");
+		
+		try {
+			ModelResourceRepository.delete(id, new Pet()); // TODO new person is placeholder fix and go away from person 
+			response.setStatus(true);
+			response.setMessage("Pet deleted successfully");
+		} catch (Exception e) {
+			response.setStatus(false);
+			response.setMessage("Pet does not exist");
+			e.printStackTrace();
+		} 
+		
 		return response;
 	}
 
@@ -98,7 +130,7 @@ public class ResourceBrokerServiceImpl implements ResourceBrokerService {
 	@Override
 	@GET @Path("/pet/getAll")
 	public Pet[] getAllPets() {
-		List<ModelResource> petList = ModelResourceRepository.findAll(new Pet());	
+		List<? extends ModelResource> petList = ModelResourceRepository.findAll(new Pet());	
 		Pet[] p = new Pet[petList.size()];
 		petList.toArray(p);
 

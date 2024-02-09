@@ -14,7 +14,7 @@ import jakarta.persistence.criteria.Order;
 // TODO generalise to model repository
 // only serve servicemodelresources
 // to make it stateless we could just rest on request via listener since i dont have EJB environment yet
-// this is the database interface on application level (uses java persistence api)
+// this is the database interface on application level that persists resources to the db (using java persistence api)
 public class ModelResourceRepository {
 	private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	// this defines that the entitymanager will exist during the context lifecycle
@@ -47,57 +47,58 @@ public class ModelResourceRepository {
 	@PersistenceContext
 	private static EntityManager em = ModelResourceRepository.getEMF().createEntityManager();
 	
-	// TODO RETURN INFO ABOUT DUPLICATE ID => CURRENTLY PRODUCES inteernal server error on dupe id 
+
 	public static ModelResource create(ModelResource resource) {
 		logger.info("Creating " + resource.getClass()); // TODO add info about id 
-
-		em.getTransaction().begin();
-		em.persist(resource); // persist according to the binding defined in the specific resource class def
-		em.getTransaction().commit();
-
+	
+		try {
+			em.getTransaction().begin();
+			em.persist(resource);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			em.getTransaction().commit(); // this flushes the cache to db => need to execute it to close transaction
+		} 
+		
+	
+		// persist according to the binding defined in the specific resource class def
 		return resource;
 	}
 
-	public static List<ModelResource> findAll(ModelResource resource) {
-		// TODO check how to handle => need two versions
+	public static List<? extends ModelResource> findAll(ModelResource resource) {
+		// I need this return syntax for lists because a list cannot contain different subclasses! 
+		//Java does not know at this point that my query will only return the same sub class only.
 		logger.info("Getting all resources of requested type"); 
-		// TODO non functional
-		//return em.createQuery("SELECT p FROM Person p", resource.getClass()).getResultList();
-		return null;
+		// we need r as name in this statement because the function cannot handle select * i think 
+		return em.createQuery("SELECT r FROM " + resource.getClass().getSimpleName() + " r", resource.getClass()).getResultList();
 	}
 	
-	// we need resource here to know which class it is 
-	// TODO RETURN INFO ABOUT DUPLICATE ID => CURRENTLY PRODUCES inteernal server error on dupe id 
+	// we need resource here to know which class it is TODO change away from that => check how i can pass a subclass of modelresource (actual CLASS object)
 	public static ModelResource findById(int id, ModelResource resource) {
 		logger.info("Getting " + resource.getClass() + " by id " + id);
 		return em.find(resource.getClass(), id);
-
 	}
-	// TODO MOVE TO ORDER INSTEAD OF SPECIFIC CLASS => THEN DO Order.class
+	
 	
 	// TODO change away from class. Either split into different deletes for each class 
 	//TODO FOR NOW WE SEND JUST EMPTY OBJECT (OR DUMMY) TO KEEP IT STREAMLINED 
 	public static void delete(int id, ModelResource resource) {
 		logger.info("Deleting Resource " + resource.getClass() + " id " + id);
-// check if we can just pass the class object itself with person.class
-	// fix and figure out
-		resource = em.find(resource.getClass(), id);
 
-		if (resource != null) {
+		try {
 			em.getTransaction().begin();
-			resource = em.merge(resource);
+			resource = em.merge(em.find(resource.getClass(), id));
 			em.remove(resource);
-			em.getTransaction().commit();
-		} else {
-			// return as message maybe TODO
-			System.out.println("resource not found");
+		} catch (Exception e) {
+			e.printStackTrace(); // remove stack trace from here to not have it double because already in caller TODO
+		} finally {
+			em.getTransaction().commit(); // close out transaction in any case
 		}
-
 	}
 
 	public ModelResource update(ModelResource resource) {
 		logger.info("Updating resource " + resource.getClass());
-
 		return em.merge(resource);
 	}
 
