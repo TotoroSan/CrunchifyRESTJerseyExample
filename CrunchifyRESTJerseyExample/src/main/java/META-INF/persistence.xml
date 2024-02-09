@@ -3,12 +3,14 @@
 	<persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<class>com.crunchify.restjersey.model.Person</class>
+		<class>com.crunchify.restjersey.model.Pet</class>
 		<properties>
 			<property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
 			<property name="jakarta.persistence.jdbc.url" value = "jdbc:sqlserver://localhost:1433;databaseName=TESTDB;encrypt=true;trustServerCertificate=true"/>
 			<property name="jakarta.persistence.jdbc.user" value="SA"/>
 			<property name="jakarta.persistence.jdbc.password" value="&lt;Testpassword123!&gt;"/>
 			<property name="eclipselink.logging.level" value="FINE"/>
+			<property name="javax.persistence.schema-generation.create-database-schemas" value="false"/>
 
 		</properties>
 	</persistence-unit>

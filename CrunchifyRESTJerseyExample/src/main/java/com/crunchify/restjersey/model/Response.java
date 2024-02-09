@@ -4,6 +4,7 @@ package com.crunchify.restjersey.model;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
+// TODO persist? extend to resource?
 
 @JsonbPropertyOrder({"status", "message"})
 public class Response {
@@ -12,7 +13,7 @@ public class Response {
 	private boolean status;
 	private String message;
 	
-	public Response(){ // needed for JSON-B
+	public Response(){ // constructor is needed for JSON-B
 		super();
 	}
 

@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 @JsonbPropertyOrder({"name", "address", "nationality", "phonenumber", "age"}) 
 @Entity(name="Person")
 @Table(name="Person")
-public class Person implements Serializable{
+public class Person extends ModelResource implements Serializable{
 	//@Id // TODO ADD AUTO GENERATION OF ID LATER 
 	@JsonbProperty("id") // this defines the name of an object in the document. if omitted, the attribute name is used.
 	@Id
@@ -85,12 +85,10 @@ public class Person implements Serializable{
 		this.age = age;
 	}
 
-
-	
-	// this prints all information about a person to string
-	@Override 
-	public String toString(){
-		return id+"::"+name+"::"+age;
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", name=" + name + ", address=" + address + ", nationality=" + nationality
+				+ ", phonenumber=" + phonenumber + ", age=" + age + "]";
 	}
 
 }

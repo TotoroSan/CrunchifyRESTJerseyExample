@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 // store connection data for current context 
 // called and destroyed on context event 
 // connection is static, change to dynamic TODO
-//
+// CURRENTLY UNUSED 
 public class DatabaseConnection {
 	
 	private static String connectionUrl;

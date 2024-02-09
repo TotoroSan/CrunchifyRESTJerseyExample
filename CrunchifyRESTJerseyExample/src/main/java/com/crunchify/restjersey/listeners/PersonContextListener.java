@@ -1,8 +1,8 @@
 
   package com.crunchify.restjersey.listeners;
   
-  import com.crunchify.restjersey.dataservice.DataManager;
-import com.crunchify.restjersey.model.PersonRepository;
+
+import com.crunchify.restjersey.model.ModelResourceRepository;
 
   
   
